@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management API Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 { 
+            color: #2c3e50; 
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        h2 { color: #3498db; }
+        .doc-section {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 4px 4px 0;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .doc-type {
+            font-size: 0.8em;
+            color: #7f8c8d;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Library Management API Documentation Index</h1>
+    <p>Welcome to the Library Management API documentation. Please choose from the following documentation options:</p>
+
+    <div class="doc-section">
+        <h2>API Documentation</h2>
+        <ul>
+            <li>
+                <a href="/v1/docs">Interactive API Documentation (Swagger UI)</a>
+                <span class="doc-type">- Interactive documentation with API testing capabilities</span>
+            </li>
+            <li>
+                <a href="/v1/docs/static">Static HTML API Documentation</a>
+                <span class="doc-type">- Simple HTML documentation of all endpoints</span>
+            </li>
+            <li>
+                <a href="/v1/docs?format=html">Alternative Static Documentation Link</a>
+                <span class="doc-type">- Redirects to the static HTML documentation</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="doc-section">
+        <h2>Guides</h2>
+        <ul>
+            <li>
+                <a href="/v1/docs/running-and-deployment">Running and Deployment Guide</a>
+                <span class="doc-type">- Instructions for running the application and deployment options</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="doc-section">
+        <h2>Documentation Files</h2>
+        <p>The following documentation files are available in the repository:</p>
+        <ul>
+            <li><strong>README.md</strong> - Overview and general documentation</li>
+            <li><strong>src/docs/api-documentation.html</strong> - Static API documentation</li>
+            <li><strong>src/docs/running-and-deployment.md</strong> - Running and deployment guide</li>
+            <li><strong>src/docs/swaggerDef.js</strong> - Swagger configuration</li>
+            <li><strong>src/docs/*.yml</strong> - OpenAPI specification files</li>
+        </ul>
+    </div>
+
+    <div class="doc-section">
+        <h2>Troubleshooting</h2>
+        <p>If you're experiencing issues with the Swagger UI (blank screen), try the following:</p>
+        <ol>
+            <li>Make sure <code>NODE_ENV</code> is set to <code>development</code> in your environment</li>
+            <li>Use the static HTML documentation links above</li>
+            <li>Check the console for any JavaScript errors</li>
+            <li>Refer to the running and deployment guide for additional troubleshooting steps</li>
+        </ol>
+    </div>
+</body>
+</html> 

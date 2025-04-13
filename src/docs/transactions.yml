@@ -1,0 +1,138 @@
+tags:
+- name: Transactions
+  description: Book purchasing and rental operations
+
+paths:
+  /transactions/buy/{bookId}:
+    post:
+      summary: Buy a book
+      description: Purchase a book from the library
+      tags: [Transactions]
+      parameters:
+        - in: path
+          name: bookId
+          required: true
+          schema:
+            type: string
+          description: ID of the book to purchase
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userId
+              properties:
+                userId:
+                  type: string
+                  description: ID of the user making the purchase
+              example:
+                userId: 5ebac534954b54139806c112
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        "400":
+          description: Book not available for sale
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: 400
+                message: Book is not available for sale
+        "404":
+          description: Book not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: 404
+                message: Book not found
+
+  /transactions/rent/{bookId}:
+    post:
+      summary: Rent a book
+      description: Rent a book from the library for a specified duration
+      tags: [Transactions]
+      parameters:
+        - in: path
+          name: bookId
+          required: true
+          schema:
+            type: string
+          description: ID of the book to rent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userId
+                - duration
+              properties:
+                userId:
+                  type: string
+                  description: ID of the user renting the book
+                duration:
+                  type: integer
+                  description: Rental duration in days
+                  minimum: 1
+              example:
+                userId: 5ebac534954b54139806c112
+                duration: 14
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        "400":
+          description: Book not available for rent or invalid duration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: 400
+                message: Book is not available for rent
+        "404":
+          description: Book not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: 404
+                message: Book not found
+
+  /transactions/my:
+    get:
+      summary: Get user transactions
+      description: Get all transactions for a specific user
+      tags: [Transactions]
+      parameters:
+        - in: query
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: ID of the user
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+        "404":
+          $ref: '#/components/responses/NotFound' 

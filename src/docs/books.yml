@@ -1,0 +1,214 @@
+tags:
+  - name: Books
+    description: Book management and retrieval
+
+paths:
+  /books:
+    post:
+      summary: Create a new book
+      description: Create a new book in the library.
+      tags: [Books]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - author
+                - isbn
+                - publishYear
+                - price
+              properties:
+                title:
+                  type: string
+                author:
+                  type: string
+                isbn:
+                  type: string
+                  description: Unique identifier for the book
+                publishYear:
+                  type: number
+                description:
+                  type: string
+                price:
+                  type: number
+                rentalPrice:
+                  type: number
+                availableForRent:
+                  type: boolean
+                availableForSale:
+                  type: boolean
+                quantityAvailable:
+                  type: number
+              example:
+                title: The Great Gatsby
+                author: F. Scott Fitzgerald
+                isbn: 9780743273565
+                publishYear: 1925
+                description: A classic American novel
+                price: 9.99
+                rentalPrice: 2.99
+                availableForRent: true
+                availableForSale: true
+                quantityAvailable: 10
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        "400":
+          $ref: '#/components/responses/DuplicateISBN'
+    
+    get:
+      summary: Get all books
+      description: Get books with various filtering options.
+      tags: [Books]
+      parameters:
+        - in: query
+          name: title
+          schema:
+            type: string
+          description: Book title
+        - in: query
+          name: author
+          schema:
+            type: string
+          description: Author name
+        - in: query
+          name: sortBy
+          schema:
+            type: string
+          description: Sort order (e.g. title:asc,publishYear:desc)
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+          default: 10
+          description: Maximum number of books
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Book'
+                  page:
+                    type: integer
+                    example: 1
+                  limit:
+                    type: integer
+                    example: 10
+                  totalPages:
+                    type: integer
+                    example: 1
+                  totalResults:
+                    type: integer
+                    example: 1
+
+  /books/{id}:
+    get:
+      summary: Get a book
+      description: Get details of a specific book.
+      tags: [Books]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Book ID
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        "404":
+          $ref: '#/components/responses/NotFound'
+
+    patch:
+      summary: Update a book
+      description: Update details of a specific book.
+      tags: [Books]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Book ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                author:
+                  type: string
+                isbn:
+                  type: string
+                publishYear:
+                  type: number
+                description:
+                  type: string
+                price:
+                  type: number
+                rentalPrice:
+                  type: number
+                availableForRent:
+                  type: boolean
+                availableForSale:
+                  type: boolean
+                quantityAvailable:
+                  type: number
+              example:
+                title: Updated Book Title
+                description: Updated description
+                price: 14.99
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        "404":
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      summary: Delete a book
+      description: Delete a book from the library.
+      tags: [Books]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Book ID
+      responses:
+        "204":
+          description: No content
+        "404":
+          $ref: '#/components/responses/NotFound' 

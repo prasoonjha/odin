@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management API Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 { color: #2c3e50; }
+        h2 { 
+            color: #3498db; 
+            margin-top: 30px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        h3 { 
+            color: #2980b9;
+            margin-top: 25px; 
+        }
+        .endpoint {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 4px 4px 0;
+        }
+        .method {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .method.get { color: #2ecc71; }
+        .method.post { color: #3498db; }
+        .method.delete { color: #e74c3c; }
+        .method.patch { color: #f39c12; }
+        .path {
+            font-family: monospace;
+            font-size: 1.1em;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: monospace;
+            background-color: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Library Management API Documentation</h1>
+    <p>A RESTful API for a library management system with book management, user reviews, and book purchase/rental features.</p>
+
+    <h2>Authentication</h2>
+    <p>Authentication has been disabled for all endpoints. For operations that previously required a user ID, you must provide it explicitly in the request body or query parameters.</p>
+
+    <h2>Books</h2>
+
+    <div class="endpoint">
+        <span class="method get">GET</span>
+        <span class="path">/v1/books</span>
+        <p>Get all books with optional filtering</p>
+        <h4>Query Parameters:</h4>
+        <ul>
+            <li><code>title</code> - Filter by book title</li>
+            <li><code>author</code> - Filter by author name</li>
+            <li><code>sortBy</code> - Sort results (e.g., <code>title:asc,publishYear:desc</code>)</li>
+            <li><code>limit</code> - Maximum number of results (default: 10)</li>
+            <li><code>page</code> - Page number (default: 1)</li>
+        </ul>
+    </div>
+
+    <div class="endpoint">
+        <span class="method post">POST</span>
+        <span class="path">/v1/books</span>
+        <p>Create a new book</p>
+        <h4>Request Body:</h4>
+        <pre>{
+  "title": "The Great Gatsby",
+  "author": "F. Scott Fitzgerald",
+  "isbn": "9780743273565",
+  "publishYear": 1925,
+  "description": "A classic American novel",
+  "price": 9.99,
+  "rentalPrice": 2.99,
+  "availableForRent": true,
+  "availableForSale": true,
+  "quantityAvailable": 10
+}</pre>
+    </div>
+
+    <div class="endpoint">
+        <span class="method get">GET</span>
+        <span class="path">/v1/books/:bookId</span>
+        <p>Get a specific book by ID</p>
+    </div>
+
+    <div class="endpoint">
+        <span class="method patch">PATCH</span>
+        <span class="path">/v1/books/:bookId</span>
+        <p>Update a book</p>
+        <h4>Request Body (partial update):</h4>
+        <pre>{
+  "title": "Updated Book Title",
+  "price": 14.99,
+  "description": "Updated description"
+}</pre>
+    </div>
+
+    <div class="endpoint">
+        <span class="method delete">DELETE</span>
+        <span class="path">/v1/books/:bookId</span>
+        <p>Delete a book</p>
+    </div>
+
+    <h2>Reviews</h2>
+
+    <div class="endpoint">
+        <span class="method post">POST</span>
+        <span class="path">/v1/reviews</span>
+        <p>Create a review for a book (max 25 words)</p>
+        <h4>Request Body:</h4>
+        <pre>{
+  "user": "5ebac534954b54139806c112", 
+  "book": "5ebac534954b54139806c113",
+  "review": "This book is absolutely amazing. Highly recommended for all readers!"
+}</pre>
+    </div>
+
+    <div class="endpoint">
+        <span class="method get">GET</span>
+        <span class="path">/v1/reviews/book/:bookId</span>
+        <p>Get all reviews for a specific book</p>
+    </div>
+
+    <div class="endpoint">
+        <span class="method delete">DELETE</span>
+        <span class="path">/v1/reviews/:reviewId</span>
+        <p>Delete a review</p>
+        <h4>Request Body:</h4>
+        <pre>{
+  "userId": "5ebac534954b54139806c112"
+}</pre>
+    </div>
+
+    <h2>Transactions</h2>
+
+    <div class="endpoint">
+        <span class="method post">POST</span>
+        <span class="path">/v1/transactions/buy/:bookId</span>
+        <p>Buy a book</p>
+        <h4>Request Body:</h4>
+        <pre>{
+  "userId": "5ebac534954b54139806c112"
+}</pre>
+    </div>
+
+    <div class="endpoint">
+        <span class="method post">POST</span>
+        <span class="path">/v1/transactions/rent/:bookId</span>
+        <p>Rent a book</p>
+        <h4>Request Body:</h4>
+        <pre>{
+  "userId": "5ebac534954b54139806c112",
+  "duration": 14
+}</pre>
+    </div>
+
+    <div class="endpoint">
+        <span class="method get">GET</span>
+        <span class="path">/v1/transactions/my?userId=:userId</span>
+        <p>Get all transactions for a user</p>
+    </div>
+
+    <h2>Data Models</h2>
+
+    <h3>Book</h3>
+    <table>
+        <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>title</td>
+            <td>String</td>
+            <td>Book title (required)</td>
+        </tr>
+        <tr>
+            <td>author</td>
+            <td>String</td>
+            <td>Author name (required)</td>
+        </tr>
+        <tr>
+            <td>isbn</td>
+            <td>String</td>
+            <td>ISBN (required, unique)</td>
+        </tr>
+        <tr>
+            <td>publishYear</td>
+            <td>Number</td>
+            <td>Publication year (required)</td>
+        </tr>
+        <tr>
+            <td>description</td>
+            <td>String</td>
+            <td>Book description</td>
+        </tr>
+        <tr>
+            <td>price</td>
+            <td>Number</td>
+            <td>Purchase price (required)</td>
+        </tr>
+        <tr>
+            <td>rentalPrice</td>
+            <td>Number</td>
+            <td>Daily rental price</td>
+        </tr>
+        <tr>
+            <td>availableForRent</td>
+            <td>Boolean</td>
+            <td>Whether the book can be rented</td>
+        </tr>
+        <tr>
+            <td>availableForSale</td>
+            <td>Boolean</td>
+            <td>Whether the book can be purchased</td>
+        </tr>
+        <tr>
+            <td>quantityAvailable</td>
+            <td>Number</td>
+            <td>Number of copies available</td>
+        </tr>
+    </table>
+
+    <h3>Review</h3>
+    <table>
+        <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>user</td>
+            <td>ObjectId</td>
+            <td>User ID (required)</td>
+        </tr>
+        <tr>
+            <td>book</td>
+            <td>ObjectId</td>
+            <td>Book ID (required)</td>
+        </tr>
+        <tr>
+            <td>review</td>
+            <td>String</td>
+            <td>Review text, max 25 words (required)</td>
+        </tr>
+    </table>
+
+    <h3>Transaction</h3>
+    <table>
+        <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>user</td>
+            <td>ObjectId</td>
+            <td>User ID (required)</td>
+        </tr>
+        <tr>
+            <td>book</td>
+            <td>ObjectId</td>
+            <td>Book ID (required)</td>
+        </tr>
+        <tr>
+            <td>type</td>
+            <td>String</td>
+            <td>Transaction type: "buy" or "rent" (required)</td>
+        </tr>
+        <tr>
+            <td>status</td>
+            <td>String</td>
+            <td>Status: "pending", "completed", or "cancelled"</td>
+        </tr>
+        <tr>
+            <td>rentalDuration</td>
+            <td>Number</td>
+            <td>Duration in days (required for rentals)</td>
+        </tr>
+        <tr>
+            <td>returnDate</td>
+            <td>Date</td>
+            <td>Return date (required for rentals)</td>
+        </tr>
+        <tr>
+            <td>price</td>
+            <td>Number</td>
+            <td>Price paid (required)</td>
+        </tr>
+    </table>
+</body>
+</html> 

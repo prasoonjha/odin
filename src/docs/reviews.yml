@@ -1,0 +1,107 @@
+tags:
+- name: Reviews
+  description: Book review management
+
+paths:
+  /reviews:
+    post:
+      summary: Create a book review
+      description: Create a new review for a book. Limited to 25 words maximum.
+      tags: [Reviews]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user
+                - book
+                - review
+              properties:
+                user:
+                  type: string
+                  description: ID of the user writing the review
+                book:
+                  type: string
+                  description: ID of the book being reviewed
+                review:
+                  type: string
+                  description: Review text (max 25 words)
+                  maxLength: 100
+              example:
+                user: 5ebac534954b54139806c112
+                book: 5ebac534954b54139806c113
+                review: This book is absolutely amazing. Highly recommended for all readers!
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        "400":
+          description: Invalid input or review too long
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: 400
+                message: Review text exceeds maximum length
+
+  /reviews/book/{bookId}:
+    get:
+      summary: Get all reviews for a book
+      description: Retrieve all reviews for a specific book
+      tags: [Reviews]
+      parameters:
+        - in: path
+          name: bookId
+          required: true
+          schema:
+            type: string
+          description: ID of the book
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Review'
+        "404":
+          $ref: '#/components/responses/NotFound'
+
+  /reviews/{reviewId}:
+    delete:
+      summary: Delete a review
+      description: Delete a specific review
+      tags: [Reviews]
+      parameters:
+        - in: path
+          name: reviewId
+          required: true
+          schema:
+            type: string
+          description: ID of the review to delete
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userId
+              properties:
+                userId:
+                  type: string
+                  description: ID of the user who created the review
+              example:
+                userId: 5ebac534954b54139806c112
+      responses:
+        "204":
+          description: No content
+        "404":
+          $ref: '#/components/responses/NotFound' 

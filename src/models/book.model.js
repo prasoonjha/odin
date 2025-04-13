@@ -26,12 +26,42 @@ const bookSchema = mongoose.Schema(
     description: {
       type: String,
       trim: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    rentalPrice: {
+      type: Number,
+      default: 0,
+    },
+    availableForRent: {
+      type: Boolean,
+      default: true,
+    },
+    availableForSale: {
+      type: Boolean,
+      default: true,
+    },
+    quantityAvailable: {
+      type: Number,
+      default: 1,
     }
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
   }
 );
+
+// Virtual for reviews
+bookSchema.virtual('reviews', {
+  ref: 'Review',
+  localField: '_id',
+  foreignField: 'book'
+});
 
 // add plugin that converts mongoose to json
 bookSchema.plugin(toJSON);

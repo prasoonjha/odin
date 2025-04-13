@@ -13,11 +13,101 @@ components:
         role:
           type: string
           enum: [user, admin]
+        isEmailVerified:
+          type: boolean
       example:
         id: 5ebac534954b54139806c112
         email: fake@example.com
         name: fake name
         role: user
+        isEmailVerified: false
+
+    Book:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        author:
+          type: string
+        isbn:
+          type: string
+        publishYear:
+          type: number
+        description:
+          type: string
+        price:
+          type: number
+        rentalPrice:
+          type: number
+        availableForRent:
+          type: boolean
+        availableForSale:
+          type: boolean
+        quantityAvailable:
+          type: number
+      example:
+        id: 5ebac534954b54139806c112
+        title: The Great Gatsby
+        author: F. Scott Fitzgerald
+        isbn: 1234567890123
+        publishYear: 1925
+        description: A classic American novel
+        price: 9.99
+        rentalPrice: 2.99
+        availableForRent: true
+        availableForSale: true
+        quantityAvailable: 10
+
+    Review:
+      type: object
+      properties:
+        id:
+          type: string
+        user:
+          type: string
+        book:
+          type: string
+        review:
+          type: string
+      example:
+        id: 5ebac534954b54139806c112
+        user: 5ebac534954b54139806c113
+        book: 5ebac534954b54139806c114
+        review: Great book, highly recommended!
+
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+        user:
+          type: string
+        book:
+          type: string
+        type:
+          type: string
+          enum: [buy, rent]
+        status:
+          type: string
+          enum: [pending, completed, cancelled]
+        rentalDuration:
+          type: number
+        returnDate:
+          type: string
+          format: date
+        price:
+          type: number
+      example:
+        id: 5ebac534954b54139806c112
+        user: 5ebac534954b54139806c113
+        book: 5ebac534954b54139806c114
+        type: rent
+        status: completed
+        rentalDuration: 14
+        returnDate: 2023-06-30
+        price: 5.99
 
     Token:
       type: object
@@ -57,6 +147,17 @@ components:
           example:
             code: 400
             message: Email already taken
+    
+    DuplicateISBN:
+      description: ISBN already taken
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 400
+            message: ISBN already taken
+    
     Unauthorized:
       description: Unauthorized
       content:
